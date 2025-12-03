@@ -108,14 +108,26 @@ pip install openmetadata-ingestion pymysql requests django mirage-crypto
 pip install "sqllineage>=1.5.0"
 ```
 
-### 2. 配置连接
+### 2. 测试功能（推荐先运行）
+```bash
+# 测试 SQL 解析功能（无需 OpenMetadata 连接）
+python test_sql_parsing.py
+```
+
+### 3. 配置连接
 复制配置文件并修改：
 ```bash
 cp config_example.py config.py
 # 编辑 config.py 填入实际配置
 ```
 
-### 3. 执行血缘提取
+编辑 `open_metadata_lineage.py` 配置 OpenMetadata 连接：
+```python
+hostPort = "http://your-server:8585/api"
+jwtToken = "your_jwt_token"
+```
+
+### 4. 执行血缘提取
 ```bash
 # 使用优化版脚本（推荐）
 python execute_lineage_v2.py
@@ -124,7 +136,9 @@ python execute_lineage_v2.py
 python execute_demo.py
 ```
 
-> 📖 **详细说明：** 查看 [docs/01-QUICKSTART.md](docs/01-QUICKSTART.md) 获取完整的快速开始指南
+> 📖 **详细说明：** 
+> - 查看 [docs/01-QUICKSTART.md](docs/01-QUICKSTART.md) 获取完整的快速开始指南
+> - 查看 [docs/07-TESTING_GUIDE.md](docs/07-TESTING_GUIDE.md) 了解测试方法
 
 ### StarRocks 专用功能
 

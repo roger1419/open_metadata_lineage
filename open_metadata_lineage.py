@@ -27,7 +27,7 @@ CREATE TABLE open_metadata_url_service (
 ```
 """
 arch_config = {
-    'host': '192.168.31.130',
+    'host': 'localhost',
     'port': 3306,
     'database': 'my_test',
     'user': 'root',
@@ -43,10 +43,10 @@ def open_metadata(hostPort: str, jwt_token: str):
     metadata = OpenMetadata(server_config)
     return metadata
 
-hostPort = "http://meta.fixpng.com/api"
+hostPort = "http://192.168.100.214:22173/api"
 
 jwtToken: str = (
-"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"eyJraWQiOiJHYjM4OWEtOWY3Ni1nZGpzLWE5MmotMDI0MmJrOTQzNTYiLCJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJvcGVuLW1ldGFkYXRhLm9yZyIsInN1YiI6ImxpbmVhZ2UtYm90Iiwicm9sZXMiOlsiTGluZWFnZUJvdFJvbGUiXSwiZW1haWwiOiJsaW5lYWdlLWJvdEBvcGVuLW1ldGFkYXRhLm9yZyIsImlzQm90Ijp0cnVlLCJ0b2tlblR5cGUiOiJCT1QiLCJpYXQiOjE3NjQ1OTQzNzMsImV4cCI6bnVsbH0.11xQwfZG_zxpAyQ3FUvOAT3sERX1C6fd4DtTPo1Hk9Zi4CuV3da0h6Beazf5RdRupirL00_nsvwhdbYd5sbvkqhwCKAZOR4uY3muKkrqQ8b7T4MLPuK9bSr5oo3P13orJXkjYaX1kSfO-d33TgFDs3FMKT2_f3m3ZGXngK8KQw9p7CYHnmEKSYJaDGdcwKxUm06zr7sUozCFYgg967qRxORhZS9uSGfcONoomReqmtqShiTR0hXREa1cvAfzMVIKAgO-XoDtzwL2tLuEdjCnbOTrh359sHBDMDjgwm2GVyAjimr9sTcM_nsEBhZgwKKAlXotbNEZIuoRe7ixTtGIKQ"
 )
 
 # 延迟初始化 METADATA，避免导入时连接失败

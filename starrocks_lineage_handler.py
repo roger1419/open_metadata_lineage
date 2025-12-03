@@ -169,6 +169,9 @@ class StarRocksLineageHandler:
         # 移除反引号
         cleaned = cleaned.replace('`', '')
         
+        # 将 INSERT OVERWRITE 转换为 INSERT INTO（sqllineage 不支持 OVERWRITE）
+        cleaned = re.sub(r'INSERT\s+OVERWRITE', 'INSERT INTO', cleaned, flags=re.IGNORECASE)
+        
         # 移除 StarRocks 特有的 PROPERTIES 子句
         cleaned = re.sub(r'PROPERTIES\s*\([^)]*\)', '', cleaned, flags=re.IGNORECASE)
         
@@ -215,6 +218,10 @@ class StarRocksLineageHandler:
         try:
             from sqllineage.runner import LineageRunner
             
+            # 确保有 metadata 客户端
+            if self.metadata is None:
+                self.metadata = open_metadata_lineage.get_metadata_client()
+            
             result = LineageRunner(sql, dialect="ansi")
             lineage = result.get_column_lineage()
             
@@ -254,8 +261,7 @@ class StarRocksLineageHandler:
             
         except Exception as exc:
             print(f"  ✗ 本地解析失败: {exc}")
-            import traceback
-            traceback.print_exc()
+            # 不打印完整堆栈，避免输出过多
             return False
 
 

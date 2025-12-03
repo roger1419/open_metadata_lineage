@@ -2,10 +2,29 @@
 """
 StarRocks 血缘测试脚本
 用于测试 StarRocks SQL 解析和血缘添加功能
+
+注意：此测试需要连接到 OpenMetadata 服务器
+如果无法连接，测试将失败
 """
 
+import sys
 import starrocks_lineage_handler
 import open_metadata_lineage
+
+# 检查 OpenMetadata 连接
+print("检查 OpenMetadata 连接...")
+try:
+    metadata = open_metadata_lineage.get_metadata_client()
+    health = metadata.health_check()
+    print(f"✓ OpenMetadata 连接成功: {health}")
+except Exception as e:
+    print(f"✗ 无法连接到 OpenMetadata: {e}")
+    print(f"\n请检查配置:")
+    print(f"  - hostPort: {open_metadata_lineage.hostPort}")
+    print(f"  - 确保 OpenMetadata 服务正在运行")
+    print(f"  - 确保网络连接正常")
+    print(f"\n跳过测试...")
+    sys.exit(0)
 
 
 def test_starrocks_insert_select():
@@ -29,8 +48,8 @@ def test_starrocks_insert_select():
     
     handler = starrocks_lineage_handler.StarRocksLineageHandler()
     success = handler.add_starrocks_lineage(
-        service_name='uat-starrocks',
-        database_name='default',
+        service_name='starrocks_test',
+        database_name='ads',
         sql=sql,
         description='测试 StarRocks INSERT SELECT'
     )
@@ -61,8 +80,8 @@ def test_starrocks_insert_overwrite():
     
     handler = starrocks_lineage_handler.StarRocksLineageHandler()
     success = handler.add_starrocks_lineage(
-        service_name='uat-starrocks',
-        database_name='default',
+        service_name='starrocks_test',
+        database_name='ads',
         sql=sql,
         description='测试 StarRocks INSERT OVERWRITE'
     )
@@ -91,8 +110,8 @@ def test_starrocks_with_dolphin_task():
     """
     
     success = starrocks_lineage_handler.add_starrocks_lineage_from_dolphin(
-        service_name='uat-starrocks',
-        database_name='default',
+        service_name='starrocks_test',
+        database_name='ads',
         sql=sql,
         project_name='数据中台',
         workflow_name='DWD层数据处理',
@@ -132,8 +151,8 @@ def test_starrocks_complex_sql():
     
     handler = starrocks_lineage_handler.StarRocksLineageHandler()
     success = handler.add_starrocks_lineage(
-        service_name='uat-starrocks',
-        database_name='default',
+        service_name='starrocks_test',
+        database_name='ads',
         sql=sql,
         description='测试复杂 SQL 解析',
         task_info={
@@ -175,8 +194,8 @@ def test_starrocks_with_properties():
     print(f"\n清理后的 SQL:\n{cleaned_sql}\n")
     
     success = handler.add_starrocks_lineage(
-        service_name='uat-starrocks',
-        database_name='default',
+        service_name='starrocks_test',
+        database_name='ads',
         sql=sql,
         description='测试 StarRocks 特有语法'
     )
