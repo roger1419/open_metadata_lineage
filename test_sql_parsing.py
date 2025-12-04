@@ -4,6 +4,14 @@ SQL 解析测试脚本（不需要 OpenMetadata 连接）
 仅测试 SQL 清理和解析功能
 """
 
+import sys
+import io
+
+# 修复 Windows 控制台编码问题
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 import starrocks_lineage_handler
 
 
