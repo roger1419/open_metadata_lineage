@@ -423,7 +423,8 @@ def main():
     
     # SQL 文件路径
     # SQL_FILE = "../sql/P_ads_bi_sv_user_recharge_expo_info_di.sql"
-    SQL_FILE = "../sql/P_dws_user_short_video_wide_active_period_ed.sql"
+    # SQL_FILE = "../sql/P_dws_user_short_video_wide_active_period_ed.sql"
+    SQL_FILE = "../sql/P_ads_bi_sv_user_recharge_expo_info_di_copy.sql"
 
 
     print("="*60)
